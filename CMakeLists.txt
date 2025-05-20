@@ -33,5 +33,45 @@ message(STATUS "${PROJECT_NAME} version: ${PROJECT_VERSION}")
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET gtk4)
 
-add_executable(taskit src/main.c src/app.c)
+# GLIB_COMPILE_RESOURCES --- STR ----------------------------------------------
+find_program(GLIB_COMPILE_RESOURCES NAMES glib-compile-resources REQUIRED)
+
+set(GRESOURCE_C   taskit.gresource.c)
+set(GRESOURCE_XML taskit.gresource.xml)
+
+add_custom_command(
+    OUTPUT ${GRESOURCE_C}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${GLIB_COMPILE_RESOURCES}
+    ARGS
+      --generate-source ${GRESOURCE_XML}
+      --target=${CMAKE_CURRENT_BINARY_DIR}/${GRESOURCE_C}
+    VERBATIM
+    MAIN_DEPENDENCY ${GRESOURCE_XML}
+    DEPENDS
+      taskit.gresource.xml
+      assets/window.ui
+      assets/styles.css
+)
+
+add_custom_target(
+  taskit-resources
+  DEPENDS
+  ${CMAKE_CURRENT_BINARY_DIR}/${GRESOURCE_C}
+)
+
+# GLIB_COMPILE_RESOURCES --- END ----------------------------------------------
+
+# EXECUTABLE --- STR ----------------------------------------------------------
+
+add_executable(taskit
+  src/main.c
+  src/app.c
+  src/win.c
+  ${CMAKE_CURRENT_BINARY_DIR}/${GRESOURCE_C}
+)
+
 target_link_libraries(taskit PRIVATE PkgConfig::GTK4)
+add_dependencies(taskit taskit-resources)
+
+# EXECUTABLE --- END ----------------------------------------------------------

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="TaskitWin" parent="GtkApplicationWindow">
+    <property name="title">Taskify</property>
+    <property name="default-width">500</property>
+    <property name="default-height">500</property>
+    <property name="resizable">FALSE</property>
+  </template>
+</interface>

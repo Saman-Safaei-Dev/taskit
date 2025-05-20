@@ -1,4 +1,5 @@
 #include "app.h"
+#include "win.h"
 #include <gtk/gtk.h>
 
 struct _TaskitApp {
@@ -8,9 +9,7 @@ struct _TaskitApp {
 G_DEFINE_TYPE(TaskitApp, taskit_app, GTK_TYPE_APPLICATION)
 
 static void taskit_app_activate(GApplication *app) {
-  GtkWidget *win = gtk_application_window_new(GTK_APPLICATION(app));
-  gtk_window_set_title(GTK_WINDOW(win), "Taskit");
-  gtk_window_set_default_size(GTK_WINDOW(win), 300, 300);
+  TaskitWin *win = taskit_win_new(TASKIT_APP(app));
   gtk_window_present(GTK_WINDOW(win));
 }
 

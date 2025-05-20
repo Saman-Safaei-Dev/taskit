@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/ir/taskit/saman">
+    <file>assets/styles.css</file>
+    <file>assets/window.ui</file>
+  </gresource>
+</gresources>
